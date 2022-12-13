@@ -17,10 +17,9 @@ int main() {
     struct Contato contatos[100]; // ver como deixar sem tamanho 
     int opcao;
     int cod;
-    int i = 0;
-
+    int i, encontrado = 0;
     int indiceAgenda = 0;
-    printf("indiceAgenda: %d", indiceAgenda);
+    char pesq[60];
 
     do {
         system("cls");
@@ -38,48 +37,51 @@ int main() {
 
         switch(opcao) {
             case 1:
-                do
-                {
-                    contatos->id = indiceAgenda;
+                contatos->id = indiceAgenda;
 
-                    fflush(stdin);
-                    printf("Digite o nome: ");
-                    gets(contatos[indiceAgenda].nome);
+                fflush(stdin);
+                printf("Digite o nome: ");
+                gets(contatos[indiceAgenda].nome);
 
-                    fflush(stdin);
-                    printf("Digite o fone: ");
-                    gets(contatos[indiceAgenda].fone);
+                fflush(stdin);
+                printf("Digite o fone: ");
+                gets(contatos[indiceAgenda].fone);
 
-                    fflush(stdin);
-                    printf("Digite o tipo do contato: pessoal ou profissional ");
-                    gets(contatos[indiceAgenda].tipo);
+                fflush(stdin);
+                printf("Digite o tipo do contato: pessoal ou profissional ");
+                gets(contatos[indiceAgenda].tipo);
 
-                    indiceAgenda++;
+                indiceAgenda++;
 
-                    printf("Cadastrado com sucesso! Voltar ao menu? (s/n)");
-                } while (getch() != 's');
-                
+                fflush(stdin);
+
+                printf("\n Cadastrado com sucesso!\n");
+
             break;
 
             case 2:
                 printf("\n-----EXCLUIR CONTATO-----\n");
+                
                 printf("\nInforme o Id do contato:");
-                scanf("%i",&cod);
+                scanf("%d, ", &cod);
 
-                printf("\n Nome:%s", contatos[cod].nome);
-                printf("\n Telefone:%s", contatos[cod].fone);
-                printf("\n tipo:%s", contatos[cod].tipo);
+                printf("\n--------------------------------\n");
+                printf("\n Nome: %s", contatos[cod].nome);
+                printf("\n Telefone: %s", contatos[cod].fone);
+                printf("\n Tipo de contato: %s", contatos[cod].tipo);
+                printf("\n--------------------------------\n");
 
                 printf("\nDeseja excluir o contato? s/n:");
 
                 if (getch() == 's')
                 {
-                    for (i=cod; i < indiceAgenda; i++)
+                    for (i = cod; i < indiceAgenda; i++)
                     {
                         strcpy(contatos[i].nome, contatos[i+1].nome);
                         strcpy(contatos[i].fone, contatos[i+1].fone);
                         strcpy(contatos[i].tipo, contatos[i+1].tipo);
                     }
+                    
                     indiceAgenda --;
                 }
 
@@ -87,12 +89,15 @@ int main() {
 
             case 3:
                 printf("\n-----ALTERAÇÃO DE CONTATO-----\n");
+                
                 printf("\nInforme o Id do contato:");
-                scanf("%i",&cod);
+                scanf("%i", &cod);
 
-                printf("\n Nome:%s", contatos[cod].nome);
-                printf("\n Telefone:%s", contatos[cod].fone);
-                printf("\n tipo:%s", contatos[cod].tipo);
+                printf("\n--------------------------------\n");
+                printf("\n Nome: %s", contatos[cod].nome);
+                printf("\n Telefone: %s", contatos[cod].fone);
+                printf("\n Tipo de contato: %s", contatos[cod].tipo);
+                printf("\n--------------------------------\n");
 
                 printf("\nDeseja alterar o contato? s/n: \n");
 
@@ -105,11 +110,11 @@ int main() {
                         gets(contatos[i].nome);
 
                         fflush(stdin);
-                        printf("Digite o fone:");
+                        printf("Digite o telefone:");
                         gets(contatos[i].fone);
 
                         fflush(stdin);
-                        printf("Digite o tipo do contato: pessoal ou profissional: ");
+                        printf("Digite o tipo do contato: (pessoal ou profissional): ");
                         gets(contatos[i].tipo);
                     }
                 }
@@ -119,30 +124,61 @@ int main() {
             case 4:
                 system("cls");
                 printf("----- LISTAR CONTATOS: ----- \n");
+                
                 for (int i = 0; i < indiceAgenda; i++)
                 {
                     printf("\n--------------------------------\n");
-                    printf("Id: %d",i);
+                    printf("Id: %d", i);
                     printf("\nNome: %s", contatos[i].nome);
-                    printf("\nFone: %s", contatos[i].fone);
+                    printf("\nTelefone: %s", contatos[i].fone);
                     printf("\nTipo de contato: %s", contatos[i].tipo);
                     printf("\n--------------------------------\n");
                 }
+
                 system("pause");
+
             break;
 
             case 5:
-                //localizar();
+                system("cls");
+                printf("\n----- CONSULTAR UM CONTATO POR NOME -----");
+                fflush(stdin);
+                printf("\nBuscar:");
+                gets(pesq);
+
+                for(i = 0; i < indiceAgenda; i++) {
+                    if (strcmp(pesq, contatos[i].nome) == 0) {
+                        fflush(stdin);
+                        printf("\n--------------------------------\n");
+                        printf("\n Id: %d", i);
+                        printf("\n Nome: %s", contatos[i].nome);
+                        printf("\n Telefone: %s", contatos[i].fone);
+                        printf("\n Tipo de contato: %s", contatos[i].tipo);
+                        printf("\n--------------------------------\n");
+
+                        encontrado = 1;
+                    }
+                }
+
+                fflush(stdin);
+                if (encontrado == 0) 
+                    printf("\n Nenhum registro encontrado!\n\n");
+
+                printf("\n");
+                system("pause");
+
             break;
 
             case 6:
                 printf("Obrigado por usar a agenda de contatos!\n");
                 exit(1);
+                
             break;
 
             default:
                 printf("Opção invalida!\n");
                 getch();
+
             break;
         }
     } while(opcao != 6); // corrigir erro quando digitamos uma string ao invés de número
